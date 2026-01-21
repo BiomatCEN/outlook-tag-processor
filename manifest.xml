@@ -10,12 +10,10 @@
   <ProviderName>Tag Processor</ProviderName>
   <DefaultLocale>fr-FR</DefaultLocale>
   <DisplayName DefaultValue="Tag Processor"/>
-  <Description DefaultValue="Convertit les tags [xxx] en catégories Outlook"/>
+  <Description DefaultValue="Convertit les tags en categories Outlook"/>
   
-  <!-- REMPLACEZ VOTRE_USERNAME par votre nom d'utilisateur GitHub -->
   <IconUrl DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-64.png"/>
   <HighResolutionIconUrl DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-128.png"/>
-  
   <SupportUrl DefaultValue="https://github.com/biomatcen/outlook-tag-processor"/>
   
   <AppDomains>
@@ -45,7 +43,6 @@
   <Rule xsi:type="RuleCollection" Mode="Or">
     <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
   </Rule>
-  
   <DisableEntityHighlighting>false</DisableEntityHighlighting>
   
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
@@ -58,8 +55,6 @@
     <Hosts>
       <Host xsi:type="MailHost">
         <DesktopFormFactor>
-          
-          <!-- Bouton pour un seul mail -->
           <ExtensionPoint xsi:type="MessageReadCommandSurface">
             <OfficeTab id="TabDefault">
               <Group id="TagProcessorGroup">
@@ -87,20 +82,17 @@
               </Group>
             </OfficeTab>
           </ExtensionPoint>
-          
         </DesktopFormFactor>
       </Host>
     </Hosts>
     
     <Resources>
       <bt:Images>
-        <!-- REMPLACEZ VOTRE_USERNAME par votre nom d'utilisateur GitHub -->
         <bt:Image id="Icon.16x16" DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-16.png"/>
         <bt:Image id="Icon.32x32" DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-32.png"/>
         <bt:Image id="Icon.80x80" DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
-        <!-- REMPLACEZ VOTRE_USERNAME par votre nom d'utilisateur GitHub -->
         <bt:Url id="TaskpaneUrl" DefaultValue="https://biomatcen.github.io/outlook-tag-processor/taskpane.html"/>
       </bt:Urls>
       <bt:ShortStrings>
@@ -108,9 +100,8 @@
         <bt:String id="ButtonLabel" DefaultValue="Traiter les tags"/>
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="ButtonTooltip" DefaultValue="Convertit les tags [xxx] du sujet en catégories Outlook"/>
+        <bt:String id="ButtonTooltip" DefaultValue="Convertit les tags du sujet en categories Outlook"/>
       </bt:LongStrings>
     </Resources>
-    
   </VersionOverrides>
 </OfficeApp>
