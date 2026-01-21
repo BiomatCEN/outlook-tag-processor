@@ -1,82 +1,70 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
-           xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0"
-           xsi:type="MailApp">
-  
-  <Id>b2c3d4e5-f6a7-8901-bcde-f12345678901</Id>
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xsi:type="MailApp">
+  <Id>a1b2c3d4-e5f6-7890-abcd-ef1234567890</Id>
   <Version>1.0.0.0</Version>
-  <ProviderName>Tag Processor</ProviderName>
+  <ProviderName>BiomatCEN</ProviderName>
   <DefaultLocale>fr-FR</DefaultLocale>
   <DisplayName DefaultValue="Tag Processor"/>
-  <Description DefaultValue="Convertit les tags en categories Outlook"/>
-  
+  <Description DefaultValue="Convertit les tags en categories"/>
   <IconUrl DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-64.png"/>
-  <HighResolutionIconUrl DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-128.png"/>
-  <SupportUrl DefaultValue="https://github.com/biomatcen/outlook-tag-processor"/>
-  
+  <HighResolutionIconUrl DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-64.png"/>
+  <SupportUrl DefaultValue="https://biomatcen.github.io/outlook-tag-processor/"/>
   <AppDomains>
     <AppDomain>https://biomatcen.github.io</AppDomain>
   </AppDomains>
-  
   <Hosts>
     <Host Name="Mailbox"/>
   </Hosts>
-  
   <Requirements>
     <Sets>
-      <Set Name="Mailbox" MinVersion="1.5"/>
+      <Set Name="Mailbox" MinVersion="1.1"/>
     </Sets>
   </Requirements>
-  
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
         <SourceLocation DefaultValue="https://biomatcen.github.io/outlook-tag-processor/taskpane.html"/>
-        <RequestedHeight>300</RequestedHeight>
+        <RequestedHeight>250</RequestedHeight>
       </DesktopSettings>
     </Form>
   </FormSettings>
-  
   <Permissions>ReadWriteMailbox</Permissions>
   <Rule xsi:type="RuleCollection" Mode="Or">
     <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
   </Rule>
   <DisableEntityHighlighting>false</DisableEntityHighlighting>
-  
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
     <Requirements>
-      <bt:Sets DefaultMinVersion="1.5">
+      <bt:Sets DefaultMinVersion="1.3">
         <bt:Set Name="Mailbox"/>
       </bt:Sets>
     </Requirements>
-    
     <Hosts>
       <Host xsi:type="MailHost">
         <DesktopFormFactor>
+          <FunctionFile resid="residFunctionFile"/>
           <ExtensionPoint xsi:type="MessageReadCommandSurface">
             <OfficeTab id="TabDefault">
-              <Group id="TagProcessorGroup">
-                <Label resid="GroupLabel"/>
+              <Group id="msgReadGroup">
+                <Label resid="groupLabel"/>
                 <Icon>
-                  <bt:Image size="16" resid="Icon.16x16"/>
-                  <bt:Image size="32" resid="Icon.32x32"/>
-                  <bt:Image size="80" resid="Icon.80x80"/>
+                  <bt:Image size="16" resid="icon16"/>
+                  <bt:Image size="32" resid="icon32"/>
+                  <bt:Image size="80" resid="icon80"/>
                 </Icon>
-                <Control xsi:type="Button" id="ProcessTagsButton">
-                  <Label resid="ButtonLabel"/>
+                <Control xsi:type="Button" id="msgReadBtn">
+                  <Label resid="btnLabel"/>
                   <Supertip>
-                    <Title resid="ButtonLabel"/>
-                    <Description resid="ButtonTooltip"/>
+                    <Title resid="btnLabel"/>
+                    <Description resid="btnDesc"/>
                   </Supertip>
                   <Icon>
-                    <bt:Image size="16" resid="Icon.16x16"/>
-                    <bt:Image size="32" resid="Icon.32x32"/>
-                    <bt:Image size="80" resid="Icon.80x80"/>
+                    <bt:Image size="16" resid="icon16"/>
+                    <bt:Image size="32" resid="icon32"/>
+                    <bt:Image size="80" resid="icon80"/>
                   </Icon>
                   <Action xsi:type="ShowTaskpane">
-                    <SourceLocation resid="TaskpaneUrl"/>
+                    <SourceLocation resid="taskpaneUrl"/>
                   </Action>
                 </Control>
               </Group>
@@ -85,22 +73,22 @@
         </DesktopFormFactor>
       </Host>
     </Hosts>
-    
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.16x16" DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-16.png"/>
-        <bt:Image id="Icon.32x32" DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-32.png"/>
-        <bt:Image id="Icon.80x80" DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-80.png"/>
+        <bt:Image id="icon16" DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-16.png"/>
+        <bt:Image id="icon32" DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-32.png"/>
+        <bt:Image id="icon80" DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="TaskpaneUrl" DefaultValue="https://biomatcen.github.io/outlook-tag-processor/taskpane.html"/>
+        <bt:Url id="residFunctionFile" DefaultValue="https://biomatcen.github.io/outlook-tag-processor/taskpane.html"/>
+        <bt:Url id="taskpaneUrl" DefaultValue="https://biomatcen.github.io/outlook-tag-processor/taskpane.html"/>
       </bt:Urls>
       <bt:ShortStrings>
-        <bt:String id="GroupLabel" DefaultValue="Tag Processor"/>
-        <bt:String id="ButtonLabel" DefaultValue="Traiter les tags"/>
+        <bt:String id="groupLabel" DefaultValue="Tag Processor"/>
+        <bt:String id="btnLabel" DefaultValue="Traiter les tags"/>
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="ButtonTooltip" DefaultValue="Convertit les tags du sujet en categories Outlook"/>
+        <bt:String id="btnDesc" DefaultValue="Convertit les tags du sujet en categories Outlook"/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
