@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tag Processor</title>
+    
+    <!-- Office.js -->
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f3f2f1;
+            color: #323130;
+        }
+        
+        .container {
+            max-width: 100%;
+        }
+        
+        h1 {
+            font-size: 18px;
+            margin: 0 0 15px 0;
+            color: #0078d4;
+        }
+        
+        .status {
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+        
+        .status.info {
+            background-color: #e6f2ff;
+            border-left: 4px solid #0078d4;
+        }
+        
+        .status.success {
+            background-color: #dff6dd;
+            border-left: 4px solid #107c10;
+        }
+        
+        .status.error {
+            background-color: #fde7e9;
+            border-left: 4px solid #d13438;
+        }
+        
+        .status.processing {
+            background-color: #fff4ce;
+            border-left: 4px solid #ffb900;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            background-color: #0078d4;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #106ebe;
+        }
+        
+        button:disabled {
+            background-color: #c8c6c4;
+            cursor: not-allowed;
+        }
+        
+        .mail-count {
+            font-size: 13px;
+            color: #605e5c;
+            margin-bottom: 10px;
+        }
+        
+        .results {
+            margin-top: 15px;
+            font-size: 12px;
+        }
+        
+        .results ul {
+            padding-left: 20px;
+            margin: 5px 0;
+        }
+        
+        .results li {
+            margin: 3px 0;
+        }
+        
+        .tag {
+            display: inline-block;
+            background-color: #0078d4;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏷️ Tag Processor</h1>
+        
+        <div id="status" class="status info">
+            Sélectionnez un ou plusieurs mails puis cliquez sur le bouton.
+        </div>
+        
+        <div id="mailCount" class="mail-count"></div>
+        
+        <button id="processBtn" onclick="processSelectedMails()">
+            Traiter les tags
+        </button>
+        
+        <div id="results" class="results"></div>
+    </div>
+
+    <script>
+        // Configuration - URL du Flow Power Automate
+        const FLOW_URL = 'https://default898a7ac2f87844ab80f01e1852b7be.bd.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/be368126b9ff4c32ba895a5d469ca666/triggers/manual/paths/invoke?api-version=1';
+        
+        let selectedMailIds = [];
+        let userEmail = '';
+        
+        // Initialisation Office.js
+        Office.onReady((info) => {
+            if (info.host === Office.HostType.Outlook) {
+                console.log('Add-in chargé');
+                getSelectedMails();
+            }
+        });
+        
+        // Récupérer les mails sélectionnés
+        async function getSelectedMails() {
+            try {
+                const mailbox = Office.context.mailbox;
+                userEmail = mailbox.userProfile.emailAddress;
+                
+                // Vérifier si multi-sélection supportée
+                if (mailbox.getSelectedItemsAsync) {
+                    mailbox.getSelectedItemsAsync((result) => {
+                        if (result.status === Office.AsyncResultStatus.Succeeded) {
+                            selectedMailIds = result.value.map(item => ({
+                                id: item.itemId,
+                                subject: item.subject || 'Sans sujet'
+                            }));
+                            updateUI();
+                        } else {
+                            // Fallback: mail unique
+                            getSingleMail();
+                        }
+                    });
+                } else {
+                    getSingleMail();
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                showStatus('Erreur lors de la récupération des mails', 'error');
+            }
+        }
+        
+        // Fallback pour mail unique
+        function getSingleMail() {
+            const item = Office.context.mailbox.item;
+            if (item) {
+                item.getItemIdAsync((result) => {
+                    if (result.status === Office.AsyncResultStatus.Succeeded) {
+                        selectedMailIds = [{
+                            id: result.value,
+                            subject: item.subject || 'Sans sujet'
+                        }];
+                        updateUI();
+                    }
+                });
+            }
+        }
+        
+        // Mettre à jour l'interface
+        function updateUI() {
+            const countDiv = document.getElementById('mailCount');
+            const btn = document.getElementById('processBtn');
+            
+            if (selectedMailIds.length === 0) {
+                countDiv.textContent = 'Aucun mail sélectionné';
+                btn.disabled = true;
+            } else if (selectedMailIds.length === 1) {
+                countDiv.textContent = '1 mail sélectionné';
+                btn.disabled = false;
+            } else {
+                countDiv.textContent = `${selectedMailIds.length} mails sélectionnés`;
+                btn.disabled = false;
+            }
+        }
+        
+        // Traiter les mails sélectionnés
+        async function processSelectedMails() {
+            const btn = document.getElementById('processBtn');
+            const resultsDiv = document.getElementById('results');
+            
+            if (selectedMailIds.length === 0) {
+                showStatus('Aucun mail sélectionné', 'error');
+                return;
+            }
+            
+            btn.disabled = true;
+            showStatus('Traitement en cours...', 'processing');
+            resultsDiv.innerHTML = '';
+            
+            try {
+                // Convertir les IDs EWS en IDs REST si nécessaire
+                const mailsToProcess = [];
+                
+                for (const mail of selectedMailIds) {
+                    let restId = mail.id;
+                    
+                    // Conversion EWS → REST si nécessaire
+                    if (Office.context.mailbox.convertToRestId) {
+                        try {
+                            restId = await new Promise((resolve, reject) => {
+                                Office.context.mailbox.convertToRestId(
+                                    mail.id,
+                                    Office.MailboxEnums.RestVersion.v2_0,
+                                    (result) => {
+                                        if (result.status === Office.AsyncResultStatus.Succeeded) {
+                                            resolve(result.value);
+                                        } else {
+                                            resolve(mail.id);
+                                        }
+                                    }
+                                );
+                            });
+                        } catch (e) {
+                            restId = mail.id;
+                        }
+                    }
+                    
+                    mailsToProcess.push({
+                        id: restId,
+                        subject: mail.subject
+                    });
+                }
+                
+                // Appeler le Flow Power Automate
+                const response = await fetch(FLOW_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userEmail: userEmail,
+                        mails: mailsToProcess
+                    })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    showStatus('Traitement terminé avec succès !', 'success');
+                    displayResults(result);
+                } else {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+                
+            } catch (error) {
+                console.error('Erreur:', error);
+                showStatus(`Erreur: ${error.message}`, 'error');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+        
+        // Afficher le statut
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+        
+        // Afficher les résultats
+        function displayResults(result) {
+            const resultsDiv = document.getElementById('results');
+            
+            if (result.processed && result.processed.length > 0) {
+                let html = '<strong>Mails traités :</strong><ul>';
+                
+                result.processed.forEach(mail => {
+                    html += `<li>${mail.subject}`;
+                    if (mail.categories && mail.categories.length > 0) {
+                        html += '<br>';
+                        mail.categories.forEach(cat => {
+                            html += `<span class="tag">${cat}</span>`;
+                        });
+                    }
+                    html += '</li>';
+                });
+                
+                html += '</ul>';
+                resultsDiv.innerHTML = html;
+            }
+        }
+    </script>
+</body>
+</html>
