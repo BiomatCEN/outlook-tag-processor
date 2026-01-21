@@ -13,13 +13,13 @@
   <Description DefaultValue="Convertit les tags [xxx] en catégories Outlook"/>
   
   <!-- REMPLACEZ VOTRE_USERNAME par votre nom d'utilisateur GitHub -->
-  <IconUrl DefaultValue="https://VOTRE_USERNAME.github.io/outlook-tag-processor/icon-64.png"/>
-  <HighResolutionIconUrl DefaultValue="https://VOTRE_USERNAME.github.io/outlook-tag-processor/icon-128.png"/>
+  <IconUrl DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-64.png"/>
+  <HighResolutionIconUrl DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-128.png"/>
   
-  <SupportUrl DefaultValue="https://github.com/VOTRE_USERNAME/outlook-tag-processor"/>
+  <SupportUrl DefaultValue="https://github.com/biomatcen/outlook-tag-processor"/>
   
   <AppDomains>
-    <AppDomain>https://VOTRE_USERNAME.github.io</AppDomain>
+    <AppDomain>https://biomatcen.github.io</AppDomain>
   </AppDomains>
   
   <Hosts>
@@ -35,7 +35,7 @@
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
-        <SourceLocation DefaultValue="https://VOTRE_USERNAME.github.io/outlook-tag-processor/taskpane.html"/>
+        <SourceLocation DefaultValue="https://biomatcen.github.io/outlook-tag-processor/taskpane.html"/>
         <RequestedHeight>300</RequestedHeight>
       </DesktopSettings>
     </Form>
@@ -95,13 +95,13 @@
     <Resources>
       <bt:Images>
         <!-- REMPLACEZ VOTRE_USERNAME par votre nom d'utilisateur GitHub -->
-        <bt:Image id="Icon.16x16" DefaultValue="https://VOTRE_USERNAME.github.io/outlook-tag-processor/icon-16.png"/>
-        <bt:Image id="Icon.32x32" DefaultValue="https://VOTRE_USERNAME.github.io/outlook-tag-processor/icon-32.png"/>
-        <bt:Image id="Icon.80x80" DefaultValue="https://VOTRE_USERNAME.github.io/outlook-tag-processor/icon-80.png"/>
+        <bt:Image id="Icon.16x16" DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-16.png"/>
+        <bt:Image id="Icon.32x32" DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-32.png"/>
+        <bt:Image id="Icon.80x80" DefaultValue="https://biomatcen.github.io/outlook-tag-processor/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
         <!-- REMPLACEZ VOTRE_USERNAME par votre nom d'utilisateur GitHub -->
-        <bt:Url id="TaskpaneUrl" DefaultValue="https://VOTRE_USERNAME.github.io/outlook-tag-processor/taskpane.html"/>
+        <bt:Url id="TaskpaneUrl" DefaultValue="https://biomatcen.github.io/outlook-tag-processor/taskpane.html"/>
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="GroupLabel" DefaultValue="Tag Processor"/>
